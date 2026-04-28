@@ -1,0 +1,56 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "leovince/monolog-teams",
+    "description": "Monolog handler for sending log messages to Microsoft Teams channels via Workflows.",
+    "license": "MIT",
+    "keywords": [
+        "teams",
+        "workflow",
+        "log"
+    ],
+    "authors": [
+        {
+            "name": "Fabio Cagliero"
+        },
+        {
+            "name": "Jakub Łuczkiewicz"
+        }
+    ],
+    "homepage": "https://github.com/LeoVince-com/monolog-teams",
+    "support": {
+        "issues": "https://github.com/LeoVince-com/monolog-teams/issues",
+        "source": "https://github.com/LeoVince-com/monolog-teams"
+    },
+    "require": {
+        "php": "^8.3",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "monolog/monolog": "^3.0",
+        "psr/log": "^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "LeoVince\\MonologTeams\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LeoVince\\MonologTeams\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
