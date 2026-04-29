@@ -139,12 +139,24 @@ class TeamsRecord
     }
 
     /**
-     * Stringifies an array of key/value pairs to be used in attachment fields
+     * Converts any value to its string representation.
      */
-    public function stringify(array $fields): string
+    public function stringify(mixed $value): string
     {
         /** @var array<array<mixed>|bool|float|int|string|null> $normalized */
-        $normalized = $this->normalizerFormatter->normalizeValue($fields);
+        $normalized = $this->normalizerFormatter->normalizeValue($value);
+
+        if (is_bool($normalized)) {
+            return $normalized ? 'TRUE' : 'FALSE';
+        }
+
+        if (is_scalar($normalized)) {
+            return (string) $normalized;
+        }
+
+        if ($normalized === null) {
+            return 'NULL';
+        }
 
         $hasSecondDimension = count(array_filter($normalized, 'is_array')) > 0;
         $hasOnlyNonNumericKeys = count(array_filter(array_keys($normalized), 'is_numeric')) === 0;
