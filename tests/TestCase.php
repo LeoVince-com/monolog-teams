@@ -2,7 +2,7 @@
 
 namespace LeoVince\MonologTeams\Tests;
 
-use Monolog\JsonSerializableDateTimeImmutable;
+use DateTimeImmutable;
 use Monolog\Level;
 use Monolog\LogRecord;
 use Monolog\Logger;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function getRecord(int|string|Level $level = Level::Warning, string|\Stringable $message = 'test', array $context = [], string $channel = 'test', \DateTimeImmutable $datetime = new JsonSerializableDateTimeImmutable(true), array $extra = []): LogRecord
+    protected function getRecord(int|string|Level $level = Level::Warning, string|\Stringable $message = 'test', array $context = [], string $channel = 'test', DateTimeImmutable $datetime = new DateTimeImmutable(), array $extra = []): LogRecord
     {
         return new LogRecord(
             datetime: $datetime,
