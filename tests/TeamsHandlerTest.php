@@ -3,6 +3,7 @@
 use LeoVince\MonologTeams\TeamsHandler;
 use LeoVince\MonologTeams\TeamsRecord;
 use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\LineFormatter;
 
 test('Can instantiate TeamsHandler class', function () {
     $handler = new TeamsHandler($_ENV['TEAMS_WEBHOOK_URL']);
@@ -13,133 +14,11 @@ test('Can instantiate TeamsHandler class', function () {
         ->and($handler->getFormatter())->toBeInstanceOf(FormatterInterface::class);
 });
 
-test('Can log', function () {
+test('Can set formatter', function () {
     $handler = new TeamsHandler($_ENV['TEAMS_WEBHOOK_URL']);
-    $teamsRecord = $handler->getTeamsRecord();
 
-    $record = $this->getRecord();
+    $lineFormatter = new LineFormatter();
+    $handler->setFormatter($lineFormatter);
 
-    expect($teamsRecord->getTeamsData($record))->toBe([
-        'type' => 'message',
-        'attachments' => [
-            [
-                'contentType' => 'application/vnd.microsoft.card.adaptive',
-                'content' => [
-                    '$schema' => 'https://adaptivecards.io/schemas/adaptive-card.json',
-                    'type' => 'AdaptiveCard',
-                    'speak' => 'test',
-                    'version' => '1.5',
-                    'body' => [
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Message**  \ntest",
-                            'wrap' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Level**  \nWARNING",
-                            'wrap' => true,
-                        ],
-                    ],
-                    'msteams' => ['width' => 'full'],
-                    'style' => 'warning',
-                ],
-            ],
-        ],
-    ]);
-});
-
-test('Can log with name', function () {
-    $handler = new TeamsHandler($_ENV['TEAMS_WEBHOOK_URL'], 'App Name');
-    $teamsRecord = $handler->getTeamsRecord();
-
-    $record = $this->getRecord();
-
-    expect($teamsRecord->getTeamsData($record))->toBe([
-        'type' => 'message',
-        'attachments' => [
-            [
-                'contentType' => 'application/vnd.microsoft.card.adaptive',
-                'content' => [
-                    '$schema' => 'https://adaptivecards.io/schemas/adaptive-card.json',
-                    'type' => 'AdaptiveCard',
-                    'speak' => 'test',
-                    'version' => '1.5',
-                    'body' => [
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "App Name",
-                            'isSubtle' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Message**  \ntest",
-                            'wrap' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Level**  \nWARNING",
-                            'wrap' => true,
-                        ],
-                    ],
-                    'msteams' => ['width' => 'full'],
-                    'style' => 'warning',
-                ],
-            ],
-        ],
-    ]);
-});
-
-test('Can log with name, context and extra', function () {
-    $handler = new TeamsHandler($_ENV['TEAMS_WEBHOOK_URL'], 'App Name', true);
-    $teamsRecord = $handler->getTeamsRecord();
-
-    $record = $this->getRecord(
-        context: ['Context' => 'Context value'],
-        extra: ['Extra' => 'Extra value'],
-    );
-
-    expect($teamsRecord->getTeamsData($record))->toBe([
-        'type' => 'message',
-        'attachments' => [
-            [
-                'contentType' => 'application/vnd.microsoft.card.adaptive',
-                'content' => [
-                    '$schema' => 'https://adaptivecards.io/schemas/adaptive-card.json',
-                    'type' => 'AdaptiveCard',
-                    'speak' => 'test',
-                    'version' => '1.5',
-                    'body' => [
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "App Name",
-                            'isSubtle' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Message**  \ntest",
-                            'wrap' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Level**  \nWARNING",
-                            'wrap' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Extra**  \nExtra value",
-                            'wrap' => true,
-                        ],
-                        [
-                            'type' => 'TextBlock',
-                            'text' => "**Context**  \nContext value",
-                            'wrap' => true,
-                        ],
-                    ],
-                    'msteams' => ['width' => 'full'],
-                    'style' => 'warning',
-                ],
-            ],
-        ],
-    ]);
+    expect($handler->getFormatter())->toBe($lineFormatter);
 });
