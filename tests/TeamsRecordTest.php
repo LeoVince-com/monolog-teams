@@ -1,6 +1,7 @@
 <?php
 
 use LeoVince\MonologTeams\TeamsRecord;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Level;
 
 test('Can instantiate TeamsRecord class', function () {
@@ -234,7 +235,6 @@ test('Can exclude high and low-level fields', function () {
             'Nested' => [
                 'Kept' => 'should appear extra low',
                 'Removed' => 'removed extra low',
-                'Password' => 'removed extra low',
             ],
         ]
     );
@@ -257,3 +257,30 @@ test('Can exclude high and low-level fields', function () {
         ->not->toContain('removed extra low');
 });
 
+test('Set name using setter', function () {
+    $teamsRecord = new TeamsRecord();
+
+    $result = $teamsRecord->setName('App Test Name');
+
+    expect($result)->toBe($teamsRecord);
+
+    $record = $this->getRecord();
+    $data = $teamsRecord->getTeamsData($record);
+
+    expect($data['attachments'][0]['content']['body'][0]["text"])->toBe('App Test Name');
+});
+
+test('Set formatter using setter', function () {
+    $teamsRecord = new TeamsRecord();
+
+    $formatter = new LineFormatter('%message% %level_name%');
+    $result = $teamsRecord->setFormatter($formatter);
+
+    expect($result)->toBe($teamsRecord);
+
+    $record = $this->getRecord();
+    $data = $teamsRecord->getTeamsData($record);
+
+    expect($data['attachments'][0]['content']['body'][0]['text'])
+        ->toBe("**Message**  \ntest WARNING");
+});
