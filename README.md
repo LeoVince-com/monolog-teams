@@ -24,7 +24,7 @@ use Monolog\Logger;
 
 // Create the logger
 $log = new Logger('my_logger');
-$log->pushHandler(new TeamsHandler('WEBHOOK_URL', 'APP_NAME', level: Level::Error));
+$log->pushHandler(new TeamsHandler('LOG_TEAMS_WEBHOOK_URL', 'APP_NAME', level: Level::Error));
 
 // Use the logger
 $log->error('Error message');
@@ -39,7 +39,7 @@ Add to `config/logging.php` the following configuration under the `channels` key
     'handler' => LeoVince\MonologTeams\TeamsHandler::class,
     'level' => env('LOG_LEVEL', 'error'),
     'handler_with' => [
-        'webhookUrl' => env('TEAMS_WEBHOOK_URL'),
+        'webhookUrl' => env('LOG_TEAMS_WEBHOOK_URL'),
         'name' => env('APP_NAME', 'Laravel'),
         'includeContextAndExtra' => true,
     ],
@@ -49,7 +49,7 @@ Add to `config/logging.php` the following configuration under the `channels` key
 Add to `.env` the following variable:
 
 ```dotenv
-TEAMS_WEBHOOK_URL=WEBHOOK_URL
+LOG_TEAMS_WEBHOOK_URL=LOG_TEAMS_WEBHOOK_URL
 ```
 
 ## Testing

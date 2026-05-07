@@ -15,6 +15,6 @@
         </include>
     </source>
     <php>
-        <env name="TEAMS_WEBHOOK_URL" value=""/>
+        <env name="LOG_TEAMS_WEBHOOK_URL" value=""/>
     </php>
 </phpunit>
